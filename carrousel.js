@@ -1,20 +1,42 @@
-var slider_img = document.querySelector('.slider-img');
-var images = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg', 'image5.jpg', 'image6.jpeg'];
-var i = 0;
-var time = 2000;
 
-function prev(){
-    if(i <= 0 ) i = images.length;
-    i--;
-    return setImg();
+const nextArrow = document.querySelector(".next");
+const prevArrow = document.querySelector(".prev");
+const pictures = document.querySelectorAll(".slider-img");
+
+let position = 0;
+pictures[position].style.display = "block";
+
+function hideIMG() {
+  pictures[position].style.display = "block";
+  for (let i = 0; i < pictures.length; i++) {
+    if (i !== position) pictures[i].style.display = "none";
+  }
 }
 
-function next(){
-    if(i >= images.length-1 ) i = -1;
-    i++;
-    return setImg();
+function control() {
+  if (position >= 0 && position < pictures.length) {
+    hideIMG();
+  } else if (position === pictures.length) {
+    position = 0;
+    hideIMG();
+  } else {
+    position = pictures.length - 1;
+    hideIMG();
+  }
 }
 
-function setImg(){
-    return slider_img.setAttribute('src', 'images/' + images[i]);
-}
+nextArrow.addEventListener("click", () => {
+  position++;
+  control();
+});
+
+prevArrow.addEventListener("click", () => {
+  position--;
+  control();
+});
+
+// Auto slide
+setInterval(function() {
+  position++;
+  control();
+}, 3000);
